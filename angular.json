@@ -1,7 +1,218 @@
 {
   "version": 1,
-  "projects": {},
+  "projects": {
+    "burger-shop": {
+      "projectType": "application",
+      "schematics": {},
+      "root": "apps/burger-shop",
+      "sourceRoot": "apps/burger-shop/src",
+      "prefix": "schulung",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/apps/burger-shop",
+            "index": "apps/burger-shop/src/index.html",
+            "main": "apps/burger-shop/src/main.ts",
+            "polyfills": "apps/burger-shop/src/polyfills.ts",
+            "tsConfig": "apps/burger-shop/tsconfig.app.json",
+            "aot": false,
+            "assets": [
+              "apps/burger-shop/src/favicon.ico",
+              "apps/burger-shop/src/assets"
+            ],
+            "styles": ["apps/burger-shop/src/styles.css"],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/burger-shop/src/environments/environment.ts",
+                  "with": "apps/burger-shop/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "burger-shop:build",
+            "proxyConfig": "apps/burger-shop/proxy.conf.json"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "burger-shop:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "burger-shop:build"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "apps/burger-shop/tsconfig.app.json",
+              "apps/burger-shop/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!apps/burger-shop/**/*"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "apps/burger-shop/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "burger-shop-e2e": {
+      "root": "apps/burger-shop-e2e",
+      "sourceRoot": "apps/burger-shop-e2e/src",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/burger-shop-e2e/cypress.json",
+            "tsConfig": "apps/burger-shop-e2e/tsconfig.e2e.json",
+            "devServerTarget": "burger-shop:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "burger-shop:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": ["apps/burger-shop-e2e/tsconfig.e2e.json"],
+            "exclude": ["**/node_modules/**", "!apps/burger-shop-e2e/**/*"]
+          }
+        }
+      }
+    },
+    "api": {
+      "root": "apps/api/api",
+      "sourceRoot": "apps/api/api/src",
+      "projectType": "application",
+      "prefix": "api",
+      "schematics": {},
+      "architect": {
+        "build": {
+          "builder": "@nrwl/node:build",
+          "options": {
+            "outputPath": "dist/apps/api/api",
+            "main": "apps/api/api/src/main.ts",
+            "tsConfig": "apps/api/api/tsconfig.app.json",
+            "assets": ["apps/api/api/src/assets"],
+            "buildLibsFromSource": true
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "extractLicenses": true,
+              "inspect": false,
+              "fileReplacements": [
+                {
+                  "replace": "apps/api/api/src/environments/environment.ts",
+                  "with": "apps/api/api/src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@nrwl/node:execute",
+          "options": {
+            "buildTarget": "api:build"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "apps/api/api/tsconfig.app.json",
+              "apps/api/api/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!apps/api/api/**/*"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "apps/api/api/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "mylib": {
+      "projectType": "library",
+      "root": "libs/mylib",
+      "sourceRoot": "libs/mylib/src",
+      "prefix": "schulung",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/mylib/tsconfig.lib.json",
+              "libs/mylib/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/mylib/**/*"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/mylib/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "schematics": {}
+    }
+  },
   "cli": {
-    "defaultCollection": "@nrwl/workspace"
-  }
+    "defaultCollection": "@nrwl/angular"
+  },
+  "schematics": {
+    "@nrwl/angular:application": {
+      "unitTestRunner": "jest",
+      "e2eTestRunner": "cypress"
+    },
+    "@nrwl/angular:library": {
+      "unitTestRunner": "jest"
+    }
+  },
+  "defaultProject": "burger-shop"
 }
